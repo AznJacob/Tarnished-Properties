@@ -1,0 +1,38 @@
+<template>
+    <template lwc:if={currUser}>
+        <!-- Profile Details -->
+        <div class="slds-text-align_center slds-border_bottom" style="width: 100%;">
+            <div class="slds-m-top_large">
+                <img src={currUser.MediumPhotoUrl}/>
+            </div>
+            <div class="slds-m-vertical_small">
+                <h2 class="slds-text-title" style="font-size: 30px; font-weight: 500;">
+                    Hello, {currUser.FirstName}!
+                </h2>
+                <p class="slds-text-title slds-text-color_weak" style="font-size: 14px;">
+                    Email: {currUser.Email}
+                </p>
+            </div>
+        </div>
+
+        <template lwc:if={favoritedList}>
+            <template lwc:if={isListEmpty}>
+                <div class="slds-text-align_center slds-m-top_medium">
+                    <p style="font-size: 24px; color: #5c5c5c;">No Favorited Properties yet!</p>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="slds-text-align_center slds-m-top_medium">
+                    <p style="font-size: 24px; color: #5c5c5c;">Favorited Properties</p>
+                </div>
+            </template>
+            <div class="slds-grid slds-gutters slds-wrap slds-m-around_x-large">
+                <template for:each={favoritedList} for:item="prop">
+                    <div key={prop.Id} class="slds-col slds-size_1-of-3">
+                        <c-property-component property={prop} propertyid={prop.Id} onchildmessage={handleChildMessage}></c-property-component>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </template>
+</template>

@@ -1,0 +1,104 @@
+<template>
+    <!--Details Page-->
+
+    <!--Image Carousel-->
+    <div class="slds-border_bottom" style="width: 100%;">
+        <div class="slds-align_absolute-center slds slds-size_1-of-3">
+            <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                <template lwc:if={imageUrls}>
+                    <lightning-carousel>
+                        <template for:each={imageUrls} for:item="imageUrl">
+                            <lightning-carousel-image
+                            key = {imageUrl}
+                            src = {imageUrl}
+                            header = "Home Images"
+                            >
+                        </lightning-carousel-image>
+                        </template>
+                    </lightning-carousel>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Property Details and Map -->
+    <div class="slds-grid slds-wrap slds-border_bottom">
+
+        <!-- Map Section -->
+        <div class="slds-col slds-size_1-of-2 slds-border_right">
+            <div class="slds-p-around_medium">
+                <template lwc:if={mapMarkers}>
+                    <lightning-map map-markers={mapMarkers} options={mapOptions} style="border-radius: 8px;"></lightning-map>
+                </template>
+            </div>
+        </div>
+    
+        <!-- Details Section -->
+        <div class="slds-col slds-size_1-of-2 slds-p-around_large slds-text-align_left">
+            <div class="slds-grid slds-align_center">
+                <h1 class="slds-text-heading_large slds-text-color_default" style="font-size: 28px; font-weight: bold;">
+                    {property.Address__c.street}
+                </h1>
+                <template lwc:if={isUser}>
+                    <lightning-button-icon-stateful 
+                        icon-name="utility:bookmark_stroke"  
+                        variant="container"
+                        alternative-text="Favorite" 
+                        selected={buttonState}
+                        class="slds-m-left_medium"
+                        onclick={handleFavorite}>
+                    </lightning-button-icon-stateful>
+                </template>
+                <div class="slds-col slds-grid slds-grid_align-end slds-align_center">
+                    <button class="slds-button slds-button_inverse">Contact Agent</button>
+                </div>
+            </div>
+            
+            <p class="slds-text-title slds-text-color_weak" style="font-size: 20px;">
+                {property.Address__c.city}, {property.Address__c.state} {property.Address__c.postalCode}
+            </p>
+            
+            <h2 class="slds-text-title slds-m-top_medium" style="font-size: 28px; font-weight: 500;">
+                Rent: ${property.Price__c}/mo
+            </h2>
+            <p class="slds-text-title" style="font-size: 22px; font-weight: 500;">
+                {property.Bedrooms__c} Beds | {property.Bathrooms__c} Baths | {property.Square_Feet__c} sqft.
+            </p>
+    
+            <template lwc:if={featuresList.length}>
+                <h3 class="slds-text-title_bold slds-m-top_medium" style="font-size: 22px; font-weight: bold;">
+                    Features:
+                </h3>
+                <ul class="slds-list_dotted slds-m-left_medium" style="font-size: 20px;">
+                    <template for:each={featuresList} for:item="feature">
+                        <li key={feature}>{feature}</li>
+                    </template>
+                </ul>
+            </template>
+            <div class="slds-m-top_large">
+                <h3 class="slds-text-title_bold" style="font-size: 22px; font-weight: bold;">
+                    Description:
+                </h3>
+                <div class="slds-box slds-theme_default slds-m-top_small slds-box_shadow">
+                    <p class="slds-text-body_regular" style="font-size: 16px; line-height: 1.5;">
+                        {property.Description__c}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Properties -->
+    <template lwc:if={similarProperties}>
+        <div class="slds-text-align_center slds-m-top_medium">
+            <p style="font-size: 24px; color: #5c5c5c;">Similar Properties:</p>
+        </div>
+        <div class="slds-grid slds-gutters slds-wrap slds-m-around_medium">
+            <template for:each={similarProperties} for:item="prop">
+                <div key={prop.Id} class="slds-col slds-size_1-of-3">
+                    <c-property-component property={prop} propertyid={prop.Id} onchildmessage={handleChildMessage}></c-property-component>
+                </div>
+            </template>
+        </div>
+    </template>
+</template>

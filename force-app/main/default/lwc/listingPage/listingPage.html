@@ -1,0 +1,78 @@
+<template>
+    <!--All Listings Page-->
+
+    <!--Filters-->
+    <div class="slds-grid slds-gutters_x-small slds-border_bottom">
+        <div class="slds-col slds-size_1-of-12 slds-m-vertical_small slds-m-left_small">
+            <lightning-combobox
+            variant="label-hidden"
+            class="slds-m-vertical_small"
+            placeholder="Home Type"
+            onchange={handleHomeChange}
+            options={homeOptions} ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-m-vertical_small">
+            <lightning-combobox
+            variant="label-hidden"
+            class="slds-m-vertical_small"
+            placeholder="Bedrooms"
+            onchange={handleBedroomChange}
+            options={bedroomOptions} ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-12 slds-m-vertical_small">
+            <lightning-combobox
+            variant="label-hidden"
+            class="slds-m-vertical_small"
+            placeholder="Bathrooms"
+            onchange={handleBathroomChange}
+            options={bathroomOptions} ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-6 slds-m-vertical_xx-small">
+            <c-multi-slider class="slds-m-vertical_xx-small" min="0" max="10000" step="50" start="0" end="10000" onchange={handleChange}></c-multi-slider>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-m-vertical_xx-small">
+            <div class="slds-form-element">
+                <lightning-checkbox-group name="Checkbox Group"
+                              variant="label-hidden"
+                              class="slds-grid slds-grid_vertical slds-wrap slds-m-vertical_xx-small"
+                              label="Features:"
+                              options={featureOptions}
+                              value={featureArray}
+                              onchange={handleFeatureChange}
+                              style="columns: 3;"></lightning-checkbox-group>
+            </div>
+        </div>
+
+        <!--Sorting-->
+        <div class="slds-col slds-size_1-of-12 slds-m-vertical_small">
+            <lightning-combobox
+            variant="label-hidden"
+            class="slds-m-vertical_small"
+            placeholder="Sort Type"
+            onchange={handleSortTypeChange}
+            options={sortTypeOptions} ></lightning-combobox>
+        </div>
+
+        <div class="slds-col slds-size_1-of-12 slds-m-vertical_small">
+            <lightning-combobox
+            variant="label-hidden"
+            class="slds-m-vertical_small"
+            placeholder="Sort Order"
+            onchange={handleSortOrderChange}
+            options={sortOrderOptions} ></lightning-combobox>
+        </div>
+    </div>
+
+    <!--Filtered properties-->
+    <div class="slds-grid slds-gutters slds-wrap slds-m-around_xx-large">
+        <template lwc:if={filteredProperties.data}>
+
+            <template for:each={filteredProperties.data} for:item="prop">
+                <div key={prop.Id} class="slds-col slds-size_1-of-3">
+                    <c-property-component property={prop} propertyid={prop.Id} onchildmessage={handleChildMessage}></c-property-component>
+                </div>
+            </template>
+
+        </template>
+    </div>
+</template>

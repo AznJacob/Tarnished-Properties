@@ -1,0 +1,32 @@
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.carousel-slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.carousel-controls lightning-button-icon {
+    background-color: rgba(255, 255, 255, 0.8); 
+
+}

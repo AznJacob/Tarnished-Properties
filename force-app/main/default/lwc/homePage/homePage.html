@@ -1,0 +1,46 @@
+<template>
+    <!--Home Page-->
+
+    <!--Input-->
+    <div class="container">
+        <div class="slds-text-align_center slds-m-top_x-large slds-m-bottom_x-large">
+            <h1 class="slds-text-heading_large" style="font-size: 36px; font-weight: bold;">Discover the property of</h1>
+            <h1 class="slds-text-heading_large" style="font-size: 36px; font-weight: bold;">your dreams</h1>
+            <input type="text" placeholder="Enter an address, neighborhood, city, or ZIP code" class="slds-input slds-m-top_medium" style="width: 35%;"/>
+            <div>
+                <button class="slds-button slds-button_inverse slds-m-top_medium slds-m-bottom_medium" onclick={handleSearch}>Search</button>
+            </div>
+        </div>
+
+        <!--Searched properties-->
+        <template lwc:if={searchedList}>
+            <div class="slds-text-align_center">
+                <p style="font-size: 24px; color: #5c5c5c;">Properties near {searchInput}:</p>
+            </div>
+            <div class="slds-grid slds-gutters slds-wrap slds-m-around_x-large slds-border_bottom slds-border_top">
+                <template for:each={searchedList} for:item="prop">
+                    <div key={prop.Id} class="slds-col slds-size_1-of-3">
+                        <c-property-component property={prop} propertyid={prop.Id} onchildmessage={handleChildMessage}></c-property-component>
+                    </div>
+                </template>
+            </div>
+        </template>
+
+        <!--Carousel-->
+            <div class="carousel-container slds-text-align_center slds-m-top_medium slds-m-bottom_x-large">
+                <h2 style="font-size: 28px; font-weight: bold;">Featured Properties</h2>
+                <p class="slds-m-bottom_xx-small" style="font-size: 18px; color: #5c5c5c;">Explore listings with the best deals!</p>
+                <div class="carousel-slide slds-m-top_xx-small" style={slideStyle} >
+                        <template for:each={propList.data} for:item="prop">
+                                <div key={prop.Id} class="slide">
+                                    <c-property-component property={prop} propertyid={prop.Id} onchildmessage={handleChildMessage}></c-property-component>
+                                </div>
+                        </template>
+                </div>
+                <div class="carousel-controls">
+                    <lightning-button-icon icon-name="utility:left" onclick={previousSlide}></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:right" onclick={nextSlide}></lightning-button-icon>
+                </div>
+            </div>
+    </div>
+</template>

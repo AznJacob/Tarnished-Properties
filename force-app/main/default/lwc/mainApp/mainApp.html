@@ -1,14 +1,65 @@
 <template>
-    <header class="slds-box slds-theme_default">
+    <!--MAIN APP-->
+
+    <!--Header-->
+    <header class="full-width-header">
         <div class="slds-grid slds-grid_align-spread">
             <div class="slds-col">
-                <img src="{logoUrl}" alt="Company Logo" class="logo"/>
-                <span class="company-name">Tarnished Properties</span>
+                <img src={logoUrl} alt="Company Logo" class="logo"/>
+                <button onclick={changeToHome} class="slds-button slds-text-link_reset header-brand">Tarnished Properties</button>
             </div>
-            <div class="slds-col">
-                <a href="/listings" class="slds-m-right_medium">See All Listings</a>
-                <lightning-button label="Sign In" class="slds-m-left_x-small"></lightning-button>
+            <div class="slds-col slds-grid slds-align-middle slds-align_vertical-center">
+                <button onclick={changeToHome} class="slds-button slds-m-right_large slds-text-link_reset header-link">Home</button>
+                <button onclick={changeToListing} class="slds-button slds-m-right_large slds-text-link_reset header-link" style="color: black; font-size: 14px;">Listings</button>
+                <template lwc:if={isUser}>
+                    <button onclick={changeToUser} class="slds-button slds-m-right_large slds-text-link_reset header-link" style="color: black; font-size: 14px;">Profile</button>
+                </template>
+                <template lwc:if={isGuest}>
+                    <a href="/login" class="slds-m-right_large slds-text-link_reset header-link" style="display: flex; align-items: center;">Login</a>
+                </template>
             </div>
         </div>
     </header>
+
+    <!--Main Content-->
+    <div class="main-content">
+        <!--Home Page Render-->
+        <template lwc:if={homeRender}>
+            <c-home-page onparentmessage={handleParentMessage} curruser={currUser}></c-home-page>
+        </template>
+        <!--Listing Render-->
+        <template lwc:elseif={listingRender}>
+            <c-listing-page onparentmessage={handleParentMessage} curruser={currUser}></c-listing-page>
+        </template>
+        <!--Details Render-->
+        <template lwc:elseif={detailsRender}>
+            <c-details-page property={detailsProperty} onparentmessage={handleParentMessage} curruser={currUser} isuser={isUser}></c-details-page>
+        </template>
+         <!--User Render-->
+         <template lwc:elseif={userRender}>
+            <c-user-page curruser={currUser} onparentmessage={handleParentMessage}></c-user-page>
+        </template>
+    </div>
+
+    <!--Footer-->
+    <footer class="full-width-footer">
+        <div class="slds-grid slds-grid_align-space">
+            <div class="slds-col slds-align-middle">
+                <span class="footer-text white-text">About us</span>
+            </div>
+            <div class="slds-col slds-align-middle">
+                <span class="footer-text white-text">Privacy policy</span>
+            </div>
+            <div class="slds-col slds-align-middle">
+                <img src={logoUrl} alt="Company Logo" class="logo"/>
+            </div>
+            <div class="slds-col slds-align-middle">
+                <span class="footer-text black-text">Terms of Service</span>
+            </div>
+            <div class="slds-col slds-align-middle">
+                <span class="footer-text black-text">Contact</span>
+            </div>
+        </div>
+    </footer>
+
 </template>

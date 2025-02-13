@@ -1,0 +1,69 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.full-width-header {
+    width: 100%;
+    padding: 10px;
+    background: rgb(25,25,25);
+    background: linear-gradient(90deg, rgba(25,25,25,1) 0%, rgba(138,78,29,1) 50%, rgba(255,223,33,1) 100%); 
+    box-sizing: border-box;
+}
+
+.full-width-footer {
+    width: 100%;
+    padding: 10px;
+    background: rgb(25,25,25);
+    background: linear-gradient(90deg, rgba(25,25,25,1) 0%, rgba(138,78,29,1) 50%, rgba(255,223,33,1) 100%);
+    box-sizing: border-box;
+}
+
+.logo {
+    height: 40px;
+    vertical-align: middle;
+}
+
+.header-brand {
+    color: white !important;
+    font-size: 24px !important;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.header-link {
+    color: black !important;
+    font-size: 16px !important;
+    font-weight: 500;
+}
+
+.header-link:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; 
+    width: 100%;
+    height: 2px;
+    background-color: black;
+}
+
+.white-text {
+    color: white !important;
+}
+
+.black-text {
+    color: black !important;
+}
+
+.footer-text {
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
