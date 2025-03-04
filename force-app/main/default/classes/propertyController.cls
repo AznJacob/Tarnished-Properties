@@ -64,9 +64,19 @@ public with sharing class propertyController {
         return imageUrls;
     }
 
+    public static String getSecretKey(String keyName){
+        Secret_Key__mdt keyRecord = [
+            SELECT Secret_Value__c 
+            FROM Secret_Keys__mdt 
+            WHERE DeveloperName = :keyName
+            LIMIT 1
+        ];
+        return keyRecord.Secret_Value__c;
+    }
+
     @AuraEnabled
     public static List<Property__c> searchProperty(String address){
-        String apiKey = 'd3cc4e0d5a2e4ed9a09d9b119f8a8f96';
+        String apiKey = getSecretKey('SecretAPIKey');
         String encodedAddress = EncodingUtil.urlEncode(address, 'UTF-8');
 
         Http http = new Http();
@@ -101,24 +111,19 @@ public with sharing class propertyController {
         if (homeType != 'Any' && String.isNotBlank(homeType)) {
              query += ' AND Property_Type__c = :homeType';
         }
-
         if(String.isNotBlank(features)){
             query += ' AND Features__c includes (:features)';
         }
-
         Integer minBedroomsInt = Integer.valueOf(minBedrooms);
-        query += ' AND Bedrooms__c >= :minBedroomsInt';
-        
+        query += ' AND Bedrooms__c >= :minBedroomsInt';        
         Integer minBathroomsInt = Integer.valueOf(minBathrooms);
         query += ' AND Bathrooms__c >= :minBathroomsInt';
 
         query += ' AND Price__c >= :startingPrice';
         query += ' AND Price__c <= :endingPrice';
-
         if(String.isNotBlank(sortingType) && String.isNotBlank(sortingOrder)){
             query += ' ORDER BY ' + sortingType + ' ' + sortingOrder;
         }
-
         query += ' LIMIT 12';
 
         return Database.query(query);
@@ -127,9 +132,10 @@ public with sharing class propertyController {
     @AuraEnabled(cacheable=true)
     public static List<Property__c> getSimilarProperties(Id propertyId){
         Property__c prop = [SELECT Geolocation__c FROM Property__c WHERE Id = :propertyId];
-        return [SELECT Name, Address__c, Bathrooms__c, Bedrooms__c, Features__c, Price__c, Property_Type__c, Square_Feet__c, Description__c FROM Property__c 
-        WHERE Id != :propertyId AND (DISTANCE(Geolocation__c, :prop.Geolocation__c, 'mi') < 50) ORDER BY DISTANCE(Geolocation__c, :prop.Geolocation__c, 'mi')
-        LIMIT 3];
+        return [SELECT Name, Address__c, Bathrooms__c, Bedrooms__c, Features__c, Price__c, 
+            Property_Type__c, Square_Feet__c, Description__c FROM Property__c WHERE 
+            Id != :propertyId AND (DISTANCE(Geolocation__c, :prop.Geolocation__c, 'mi') < 50) 
+            ORDER BY DISTANCE(Geolocation__c, :prop.Geolocation__c, 'mi')LIMIT 3];
     }
 
     @AuraEnabled(cacheable=true)
